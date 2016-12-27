@@ -17,7 +17,7 @@ if (month < 10) {
 }
 
 function pageNo(number) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     resolve({
       "page": count,
       "month": month
@@ -25,12 +25,12 @@ function pageNo(number) {
   });
 }
 
-var timer = setInterval(function() {
+var timer = setInterval(function () {
   pageNo()
-    .then(function(value) {
+    .then(function (value) {
       fuga(value.page, value.month);
     })
-    .catch(function(error) {});
+    .catch(function (error) { });
 }, 1500);
 
 function fuga(i, mon) {
@@ -61,22 +61,22 @@ function fuga(i, mon) {
     headers: {
       "accept-language": "ja"
     }
-  }, function(error, response, body) {
+  }, function (error, response, body) {
     console.log("page" + i + " loaded");
     csv.push("page" + i);
     let $ = cheerio.load(lite.decode(body, "Shift_JIS"));
 
     $(".result_class")
       .children("tr")
-      .each(function() {
+      .each(function () {
         if ($(this)
           .children("td")
           .children("a")
           .text()) {
           if (Math.floor($(this)
-              .children("td")
-              .eq(2)
-              .text()) >= 5) {
+            .children("td")
+            .eq(2)
+            .text()) >= 5) {
             var aaa = $(this)
               .children("td")
               .children("a")
@@ -105,10 +105,10 @@ function fuga(i, mon) {
           .children()
           .length - 1));
       clearInterval(timer);
-      csv.forEach(function(element, index, array) {
+      csv.forEach(function (element, index, array) {
         console.log(element);
       });
-      timer = setInterval(function() {
+      timer = setInterval(function () {
         hoge(rushCount);
         rushCount++;
       }, 1500);
@@ -126,7 +126,7 @@ function hoge(j) {
     headers: {
       "accept-language": "ja"
     }
-  }, function(error, response, body) {
+  }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       body = lite.decode(body, "Shift_JIS");
       var $ = cheerio.load(body);
@@ -154,7 +154,8 @@ function hoge(j) {
           .replace(/\n$/g, "")
           .replace(/\u00a0/g, "")
           .replace(/\t/g, "")
-          .replace(/\r/g, "") + '"',
+          .replace(/\r/g, "")
+          .replace(/\"/g, "") + '"',
         ignore: "起票無",
         reason: "製品と直接的な関係が無いと思われる",
         url: "http://jvndb.jvn.jp/ja/contents/" + $("#header")
